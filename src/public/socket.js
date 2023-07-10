@@ -14,10 +14,12 @@ export const saveNote = (title, description) => {
 
 //cuando una nota nueva sea emitida
 export const onNewNote = (callback) => {
-  socket.on(
-    "server:newnote",
-    callback
-  );
+  socket.on("server:newnote", callback);
+};
+
+//eliminar nota
+export const deleteNote = (id) => {
+  socket.emit("client:deletenote", id);
 };
 
 //funciones del cliente para backend

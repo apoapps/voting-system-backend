@@ -3,7 +3,7 @@ import { clientNewNote, serverLoadNotes } from "./public/constants.js";
 
 export default (io) => {
   io.on("connection", (socket) => {
-    console.log("New user Connected");
+    console.log("New user Connected (web)");
 
     const emitNotes = async () => {
       const notes = await Note.find();
@@ -22,7 +22,13 @@ export default (io) => {
       console.log(savedNote);
 
       console.log(data);
-      socket.emit("server:newnote", savedNote);
+      io.emit("server:newnote", savedNote);
+    });
+
+    socket.on("client:deletenote", async (id) => {
+      await Note.findByIdAndDelete(id);
+      console.log("Deleted: " + id);
+      emitNotes();
     });
   });
 };
