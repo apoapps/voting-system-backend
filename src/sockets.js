@@ -3,7 +3,7 @@ import { clientNewNote, serverLoadNotes } from "./public/constants.js";
 
 export default (io) => {
   io.on("connection", (socket) => {
-    console.log("New user Connected (web)");
+    console.log("New user Connected (Flutter)");
 
     const emitNotes = async () => {
       const notes = await Note.find();

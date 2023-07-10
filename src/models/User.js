@@ -4,14 +4,8 @@ import { Schema, model } from "mongoose";
 
 const userSchema = new Schema(
   {
-    title: {
-      type: String,
-      required: true,
-    },
-    description: {
-      type: String,
-    },
     position: {
+      required: true,
       type: String,
       // The position or role of the user in the cabildo (e.g., President, Councilor, Secretary, etc.)
     },
