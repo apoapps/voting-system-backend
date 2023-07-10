@@ -12,9 +12,6 @@ Sigue estos pasos para configurar el backend del sistema de votación en tu ento
 
 MONGODB_URI=<URL_de_conexión_a_MongoDB>
 
-less
-Copy code
-
 Reemplaza `<URL_de_conexión_a_MongoDB>` con la URL de conexión a tu base de datos MongoDB.
 
 4. Ejecuta `npm install` para instalar todas las dependencias del proyecto.
