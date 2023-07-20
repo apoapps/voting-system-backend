@@ -1,6 +1,9 @@
 // User Model for Cabildo Members
 
-import { Schema, model } from "mongoose";
+//import { Schema, model } from "mongoose";
+
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 const userSchema = new Schema(
   {
@@ -46,7 +49,7 @@ const userSchema = new Schema(
       // The status of the user as a cabildo member (e.g., Active, Inactive, Resigned, etc.)
     },
     member_photo: {
-      type: Buffer,
+      type: String, //Buffer
       // The photo of the user
     },
     password: {
@@ -60,4 +63,4 @@ const userSchema = new Schema(
   }
 );
 
-export default model("User", userSchema);
+module.exports =  mongoose.model('User', userSchema)

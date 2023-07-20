@@ -18,4 +18,4 @@ const schema = new Schema(
   }
 );
 
-export default model("Note", schema);
+module.exports = model("Note", schema);
