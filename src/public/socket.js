@@ -1,3 +1,51 @@
+const socket = io()
+
+export const loadUsers = (callback) => {
+  socket.on("server:loadusers", callback);
+};
+
+
+export const saveUser = (position, municipalityNumber, last_name, middle_name, first_name, gender, party, start_date, end_date, member_status, member_photo, password) => {
+  socket.emit("client:newuser", {
+    position,
+    municipalityNumber,
+    last_name,
+    middle_name,
+    first_name,
+    gender,
+    party,
+    start_date,
+    end_date,
+    member_status,
+    member_photo,
+    password
+  });
+};
+
+export const onNewUser = (callback) => {
+  socket.on('server:newuser', callback);
+};
+
+export const deleteUser = id => {
+  socket.emit('client:deleteuser', id);
+};
+
+export const getUserById = id => {
+  socket.emit('client:getuser', id);
+};
+
+export const onSelected = () => {
+  socket.on('server:selecteduser', user => {
+    console.log(user);
+  })
+}
+
+
+
+
+/* CODIGO PARA CARGAR NOTAS*/
+
+/*
 import { clientNewNote, serverLoadNotes } from "./constants.js";
 const socket = io();
 
@@ -39,3 +87,4 @@ export const updateNote = (id, title, description) => {
 };
 
 //funciones del cliente para backend
+*/

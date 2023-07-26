@@ -1,5 +1,5 @@
 <!-- frontend basico para indicar que funciona el servidor -->
-
+<!--
 <!DOCTYPE html>
 <html>
   <head>
@@ -66,9 +66,9 @@
     </div>
   </body>
 </html>
-
+-->
 <!-- CODIGO SIN UTILIZAR: -->
-<!-- <!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -76,16 +76,26 @@
     <title>Sockets CRUD</title>
   </head>
   <body>
-    <form id="noteForm">
-      <input id="title" type="text" />
-      <textarea id="description" rows="3"></textarea>
+    <form id="userForm">
+      <input id="position" type="text" /> 
+      <input id="municipalityNumber" type="number" />
+      <input id="last_name" type="text" />
+      <input id="middle_name" type="text" />
+      <input id="first_name" type="text" />
+      <input id="gender" type="text" />
+      <input id="party" type="text" />
+      <input id="start_date" type="date" />
+      <input id="end_date" type="date" />
+      <input id="member_status" type="text" />
+      <input id="member_photo" type="text" />
+      <input id="password" type="password" />
       <button action="submit">Send</button>
     </form>
-    <div id="notes"></div>
+    <ul id="users"></ul>
 
 
     <script src="/socket.io/socket.io.js"></script>
  
     <script src="./main.js" type="module"></script>
   </body>
-</html> -->
+</html> 

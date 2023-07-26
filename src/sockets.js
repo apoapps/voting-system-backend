@@ -1,4 +1,41 @@
-import Note from "./models/Note";
+import User from "./models/User";
+
+
+export default (io) => {
+
+  io.on("connection",(socket) => {
+    console.log("New user connected (Flutter)");
+    const emitUsers= async () =>{
+      const users = await User.find();
+      io.emit("server:loadusers", users)
+    }
+    emitUsers();
+
+
+    //Create a new user
+    socket.on('client:newuser', async (data) => {
+      const newUser = new User(data);
+      const savedUser = await newUser.save()
+      io.emit('server:newuser', savedUser)
+    });
+
+    //Delete user
+    socket.on("client:deleteuser", async (id) => {
+      await User.findByIdAndDelete(id)
+      emitUsers()
+    });
+
+    socket.on("client:getuser", async (id) => {
+      const user = await User.findById(id)
+      socket.emit('server:selecteduser', user)
+    })
+  });
+}
+
+
+
+
+/*import Note from "./models/Note";
 import { clientNewNote, serverLoadNotes } from "./public/constants.js";
 
 export default (io) => {
@@ -46,3 +83,4 @@ export default (io) => {
     });
   });
 };
+*/
