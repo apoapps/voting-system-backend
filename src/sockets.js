@@ -1,27 +1,52 @@
+// backend.js - Código de servidor para Socket.IO
 import Note from "./models/Note";
-import { clientNewNote, serverLoadNotes } from "./public/constants.js";
+import User from "./models/User";
+
+// Función para obtener las propiedades del usuario a partir de la contraseña
+const getUserByPassword = async (password) => {
+  try {
+    // Buscar en la base de datos el usuario con la contraseña proporcionada
+    const user = await User.findOne({ password });
+
+    // Si no se encuentra ningún usuario, retornar null
+    if (!user) return null;
+
+    // Si el usuario tiene otra contraseña, retornar sus propiedades
+    return {
+      position: user.position,
+      municipalityNumber: user.municipalityNumber,
+      last_name: user.last_name,
+      middle_name: user.middle_name,
+      first_name: user.first_name,
+      gender: user.gender,
+      party: user.party,
+      start_date: user.start_date,
+      end_date: user.end_date,
+      member_status: user.member_status,
+      member_photo: user.member_photo,
+      // Agregar el resto de las propiedades del usuario aquí
+    };
+  } catch (error) {
+    console.error("Error al buscar usuario:", error);
+    return null;
+  }
+};
 
 export default (io) => {
   io.on("connection", (socket) => {
-    console.log("New user Connected (web)");
+    console.log("New user Connected (Flutter)");
 
     const emitNotes = async () => {
       const notes = await Note.find();
-
-      // nombre - objeto a emitir
       io.emit("server:loadnotes", notes);
-      //   console.log(notes);
     };
     emitNotes();
 
     //Cuando se cree una nueva nota
     socket.on("client:newnote", async (data) => {
       const newNote = new Note(data);
-
       const savedNote = await newNote.save();
       console.log(savedNote);
-
-      console.log(data);
       io.emit("server:newnote", savedNote);
     });
 
@@ -43,6 +68,18 @@ export default (io) => {
         description: updatedNote.description,
       });
       emitNotes();
+    });
+
+    // Autenticación del usuario por contraseña
+    socket.on("client:login", async (password) => {
+      const user = await getUserByPassword(password);
+      if (user) {
+        io.emit("server:login", user);
+        console.log(user);
+      } else {
+        console.log("server:loginerror");
+        io.emit("server:loginerror", {});
+      }
     });
   });
 };
