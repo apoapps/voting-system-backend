@@ -1,5 +1,4 @@
 // backend.js - Código de servidor para Socket.IO
-import Note from "./models/Note";
 import User from "./models/User";
 
 // Función para obtener las propiedades del usuario a partir de la contraseña
@@ -36,40 +35,6 @@ export default (io) => {
   io.on("connection", (socket) => {
     console.log("New user Connected (Flutter)");
 
-    const emitNotes = async () => {
-      const notes = await Note.find();
-      io.emit("server:loadnotes", notes);
-    };
-    emitNotes();
-
-    //Cuando se cree una nueva nota
-    socket.on("client:newnote", async (data) => {
-      const newNote = new Note(data);
-      const savedNote = await newNote.save();
-      console.log(savedNote);
-      io.emit("server:newnote", savedNote);
-    });
-
-    socket.on("client:deletenote", async (id) => {
-      await Note.findByIdAndDelete(id);
-      console.log("Deleted: " + id);
-      emitNotes();
-    });
-
-    socket.on("client:getnote", async (id) => {
-      const note = await Note.findById(id);
-      io.emit("server:selectednote", note);
-      emitNotes();
-    });
-
-    socket.on("client:updatenote", async (updatedNote) => {
-      await Note.findByIdAndUpdate(updatedNote._id, {
-        title: updatedNote.title,
-        description: updatedNote.description,
-      });
-      emitNotes();
-    });
-
     // Autenticación del usuario por contraseña
     socket.on("client:login", async (password) => {
       const user = await getUserByPassword(password);
@@ -81,5 +46,75 @@ export default (io) => {
         io.emit("server:loginerror", {});
       }
     });
+    socket.on("client:requestgeneraldata", async () => {
+      const users = await User.find();
+      if (users) {
+        // Convert the database records to plain JSON objects
+        const serializedUsers = users.map((user) => user.toJSON());
+
+        io.emit("server:requestgeneraldata", {
+          municipalityNumber: 24,
+          users: serializedUsers, // Send the serialized JSON data to the client
+        });
+
+        console.log(users);
+      } else {
+        console.log("server:requestgeneraldataerror");
+        io.emit("server:requestgeneraldataerror", {});
+      }
+    });
+
+    // socket.on("client:requestgeneraldata", async () => {
+    //   const users = await User.find();
+    //   if (users) {
+    //     io.emit("server:requestgeneraldata", {
+    //       municipalityNumber: 24,
+    //       users: users,
+    //     });
+    //     console.log(users);
+    //   } else {
+    //     console.log("server:requestgeneraldataerror");
+    //     io.emit("server:requestgeneraldataerror", {});
+    //   }
+    // });
   });
 };
+
+//LEGACY (No en uso)
+
+////(Dentro de default (io))
+// const emitNotes = async () => {
+//   const notes = await Note.find();
+//   io.emit("server:loadnotes", notes);
+// };
+// emitNotes();
+
+//import Note from "./models/Note";
+
+// //Cuando se cree una nueva nota
+// socket.on("client:newnote", async (data) => {
+//   const newNote = new Note(data);
+//   const savedNote = await newNote.save();
+//   console.log(savedNote);
+//   io.emit("server:newnote", savedNote);
+// });
+
+// socket.on("client:deletenote", async (id) => {
+//   await Note.findByIdAndDelete(id);
+//   console.log("Deleted: " + id);
+//   emitNotes();
+// });
+
+// socket.on("client:getnote", async (id) => {
+//   const note = await Note.findById(id);
+//   io.emit("server:selectednote", note);
+//   emitNotes();
+// });
+
+// socket.on("client:updatenote", async (updatedNote) => {
+//   await Note.findByIdAndUpdate(updatedNote._id, {
+//     title: updatedNote.title,
+//     description: updatedNote.description,
+//   });
+//   emitNotes();
+// });
