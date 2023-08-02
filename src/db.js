@@ -18,18 +18,17 @@ export const connectDB = async () => {
       const adminData = {
         position: "Administrador",
         municipalityNumber: 999,
-        // Agregar el resto de las propiedades válidas del usuario administrador
-        // Por ejemplo:
-        last_name: "Admin",
-        first_name: "Admin",
+        lastName: "Admin",
+        firstName: "Admin",
         gender: "Male",
         party: "Admin",
-        start_date: Date(),
-        end_date: "2040",
-        member_status: "Active",
-        member_photo: "admin_photo.jpg",
-        password: "1209", // La contraseña del administrador
+        startDate: "2023-07-18T00:00:00Z",
+        endDate: "2040-01-01T00:00:00Z",
+        memberStatus: "Active",
+        memberPhoto: "admin_photo",
+        password: "1209",
       };
+
       await User.create(adminData);
       console.log("Administrador creado en la base de datos.");
     }

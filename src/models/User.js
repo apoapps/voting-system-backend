@@ -1,6 +1,6 @@
 // User Model for Cabildo Members
 
-import { Schema, model } from "mongoose";
+const { Schema, model } = require("mongoose");
 
 const userSchema = new Schema(
   {
@@ -13,15 +13,15 @@ const userSchema = new Schema(
       type: Number,
       // The number assigned to the municipality where the user belongs
     },
-    last_name: {
+    lastName: {
       type: String,
       // The last name of the user
     },
-    middle_name: {
+    middleName: {
       type: String,
       // The middle name of the user
     },
-    first_name: {
+    firstName: {
       type: String,
       // The first name of the user
     },
@@ -33,20 +33,20 @@ const userSchema = new Schema(
       type: String,
       // The political party affiliation of the user
     },
-    start_date: {
-      type: Date,
+    startDate: {
+      type: String,
       // The start date of the user's term in the cabildo
     },
-    end_date: {
-      type: Date,
+    endDate: {
+      type: String,
       // The end date of the user's term in the cabildo
     },
-    member_status: {
+    memberStatus: {
       type: String,
       // The status of the user as a cabildo member (e.g., Active, Inactive, Resigned, etc.)
     },
-    member_photo: {
-      type: Buffer,
+    memberPhoto: {
+      type: String,
       // The photo of the user
     },
     password: {
@@ -60,4 +60,4 @@ const userSchema = new Schema(
   }
 );
 
-export default model("User", userSchema);
+module.exports = model("User", userSchema);
