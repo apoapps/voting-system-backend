@@ -5,7 +5,6 @@ const { Schema, model } = require("mongoose");
 const userSchema = new Schema(
   {
     position: {
-      required: true,
       type: String,
       // The position or role of the user in the cabildo (e.g., President, Councilor, Secretary, etc.)
     },

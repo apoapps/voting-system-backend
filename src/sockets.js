@@ -1,16 +1,11 @@
-// backend.js - Código de servidor para Socket.IO
 import User from "./models/User";
 
-// Función para obtener las propiedades del usuario a partir de la contraseña
 const getUserByPassword = async (password) => {
   try {
-    // Buscar en la base de datos el usuario con la contraseña proporcionada
     const user = await User.findOne({ password });
 
-    // Si no se encuentra ningún usuario, retornar null
     if (!user) return null;
 
-    // Si el usuario tiene otra contraseña, retornar sus propiedades
     return {
       position: user.position,
       municipalityNumber: user.municipalityNumber,
@@ -22,7 +17,6 @@ const getUserByPassword = async (password) => {
       endDate: user.endDate,
       memberStatus: user.memberStatus,
       memberPhoto: user.memberPhoto,
-      // Agregar el resto de las propiedades del usuario aquí
     };
   } catch (error) {
     console.error("Error al buscar usuario:", error);
@@ -34,7 +28,6 @@ export default (io) => {
   io.on("connection", (socket) => {
     console.log("New user Connected (Flutter)");
 
-    // Autenticación del usuario por contraseña
     socket.on("client:login", async (password) => {
       const user = await getUserByPassword(password);
       if (user) {
@@ -62,14 +55,11 @@ export default (io) => {
           password,
         } = updatedUserData;
 
-        // Guardar los cambios en la base de datos
         await userToUpdate.save();
 
-        // Después de guardar los cambios, obtener todos los usuarios actualizados desde la base de datos
         const updatedUsers = await User.find();
 
-        // Emitir la lista actualizada de usuarios a todos los clientes
-        io.emit("server:updateuser", { users: updatedUsers }); // Utiliza 'updatedUsers' en lugar de 'serializedUsers'
+        io.emit("server:updateuser", { users: updatedUsers });
 
         console.log("Usuario actualizado:", userToUpdate);
       } catch (error) {
@@ -84,29 +74,25 @@ export default (io) => {
       try {
         console.log(addedUser);
 
-        // Creamos una nueva instancia del modelo User con los datos recibidos del cliente
         const newUser = new User({
           position: addedUser.position,
           municipalityNumber: addedUser.municipalityNumber,
-          lastName: addedUser.last_name,
-          firstName: addedUser.first_name,
+          lastName: addedUser.lastName,
+          firstName: addedUser.firstName,
           gender: addedUser.gender,
           party: addedUser.party,
-          startDate: addedUser.start_date,
-          endDate: addedUser.end_date,
-          memberPhoto: addedUser.member_status,
+          startDate: addedUser.startDate,
+          endDate: addedUser.endDate,
+          memberStatus: addedUser.memberStatus,
+          memberPhoto: addedUser.memberPhoto,
           password: addedUser.password,
-          // Agregar el resto de las propiedades del usuario aquí según corresponda
         });
 
-        // Guardamos el nuevo usuario en la base de datos
         await newUser.save();
 
-        // Obtenemos todos los usuarios actualizados desde la base de datos
         const updatedUsers = await User.find();
 
-        // Emitimos la lista actualizada de usuarios a todos los clientes
-        io.emit("server:adduser", { users: updatedUsers });
+        io.emit("server:adduser", updatedUsers);
 
         console.log("(servidor) Nuevo usuario agregado:", newUser);
       } catch (error) {
@@ -121,31 +107,12 @@ export default (io) => {
       console.log("Conectando usuarios...");
       const users = await User.find();
       io.emit("server:getusers", users);
+      console.log(users);
     });
-    socket.on("client:deleteuser", async (data) => {
-      try {
-        const { password } = data;
 
-        const userToDelete = await User.findOne({ password });
-
-        if (!userToDelete) {
-          io.emit("server:deleteusererror", {
-            message: "Usuario no encontrado.",
-          });
-          return;
-        }
-
-        await userToDelete.remove();
-
-        io.emit("server:userdeleted", { password });
-
-        console.log("Usuario eliminado:", userToDelete);
-      } catch (error) {
-        console.error("Error al eliminar usuario:", error);
-        io.emit("server:deleteusererror", {
-          message: "Error al eliminar usuario.",
-        });
-      }
+    socket.on("client:deleteuser", async (id) => {
+      await User.findByIdAndDelete(id);
+      emitUsers();
     });
   });
 };
