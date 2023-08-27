@@ -17,14 +17,14 @@ export const connectDB = async () => {
     if (!adminUser) {
       const adminData = {
         position: "Administrador",
-        municipalityNumber: 999,
-        lastName: "Admin",
-        firstName: "Admin",
-        gender: "Male",
-        party: "Admin",
+        municipalityNumber: 0,
+        lastName: " ",
+        firstName: " ",
+        gender: "Masculino",
+        party: "sin-definir",
         startDate: "2023-07-18T00:00:00Z",
         endDate: "2040-01-01T00:00:00Z",
-        memberStatus: "Active",
+        memberStatus: "Activo",
         memberPhoto: "admin_photo",
         password: "1209",
       };

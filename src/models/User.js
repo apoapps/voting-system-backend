@@ -9,7 +9,7 @@ const userSchema = new Schema(
       // The position or role of the user in the cabildo (e.g., President, Councilor, Secretary, etc.)
     },
     municipalityNumber: {
-      type: Number,
+      type: String,
       // The number assigned to the municipality where the user belongs
     },
     lastName: {
