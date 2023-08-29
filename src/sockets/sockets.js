@@ -1,5 +1,5 @@
-import User from "./models/User";
-import { getUserByPassword } from "./functions/get_user_by_password.js";
+import User from "../models/User";
+import { getUserByPassword } from "../functions/get_user_by_password.js";
 
 export default (io) => {
   io.on("connection", (socket) => {

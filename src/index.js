@@ -2,7 +2,8 @@ import app from "./app";
 import { Server as WebSocketServer } from "socket.io";
 import http from "http";
 import { connectDB } from "./db";
-import sockets from "./sockets";
+import sockets from "./sockets/sockets";
+import votingSessionSockets from "./sockets/voting_session_socket.js";
 
 //Iniciar Base de datos
 connectDB();
@@ -16,6 +17,7 @@ const httpServer = server.listen(3001);
 const io = new WebSocketServer(httpServer);
 
 //Sockets
-sockets(io);
+//sockets(io);
+votingSessionSockets(io);
 
 console.log("server running on port 3001");
