@@ -11,6 +11,7 @@ const votingSessionSchema = new Schema(
         ref: "User",
       },
     ],
+    
     votingPoints: [
       {
         commision: String,
