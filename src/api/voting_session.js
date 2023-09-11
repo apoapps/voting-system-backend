@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-const CabildoSession = require("../models/VottingSession.js");
+const CabildoSession = require("../models/VotingSession.js");
 
 // Función para inicializar una sesión de cabildo dummy
 const initializeDummySession = async () => {
