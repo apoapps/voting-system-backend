@@ -1,0 +1,19 @@
+###
+POST http://localhost:3001/voting_session/create_type
+Content-Type: application/json
+
+{
+        "_id": "64ebdc17ec33cfa0399b9ae3",
+        "type": "denegado",
+        "position": "regidor",
+        "municipalityNumber": "0",
+        "lastName": "Pablo jose",
+        "firstName": "Pablo",
+        "gender": "Masculino",
+        "party": "sin-definir",
+        "startDate": "2023-07-18T00:00:00Z",
+        "endDate": "2040-01-01T00:00:00Z",
+        "memberStatus": "Activo",
+        "memberPhoto": "admin_photo",
+        "password": "1209"
+}

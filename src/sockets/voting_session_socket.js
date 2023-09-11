@@ -22,7 +22,7 @@ let defaultVotingPoints = [
     subject: "Uso de pelucas en sesiones de cabildo",
     description:
       "Estoy de acuerdo con el uso de pelucas en las sesiones de Cabildo. Incorporar este elemento tradicional podría añadir un nivel de formalidad y respeto al proceso legislativo. Además, el uso de pelucas podría servir como un recordatorio constante de la seriedad de las decisiones que se toman, reforzando la importancia del rol de cada miembro del Cabildo. En resumen, la propuesta no solo tiene méritos estéticos sino también funcionales que podrían enriquecer nuestras reuniones.",
-    _id: "64ebdc17ec33cfa0399b9ae3",
+    _id: "64ebdc17ec33cfa0399b9ae4",
     votesFor: [],
     votesAgainst: [],
     votesAbstain: [],
