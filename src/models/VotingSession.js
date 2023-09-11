@@ -1,5 +1,16 @@
-// CabildoSession.js
-const { Schema, model } = require("mongoose");
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
+
+const votingPointSchema = new Schema({
+  commision: String,
+  required_votes: String,
+  voting_form: String,
+  subject: String,
+  description: String,
+  votesFor: Array,
+  votesAgainst: Array,
+  votesAbstain: Array,
+});
 
 const votingSessionSchema = new Schema(
   {
@@ -11,19 +22,11 @@ const votingSessionSchema = new Schema(
         ref: "User",
       },
     ],
-    
-    votingPoints: [
-      {
-        commision: String,
-        required_votes: String,
-        voting_form: String,
-        subject: String,
-      },
-    ],
+    votingPoints: [votingPointSchema],
   },
   {
     timestamps: true,
   }
 );
 
-module.exports = model("VottingSession", votingSessionSchema);
+module.exports = mongoose.model("VotingSession", votingSessionSchema);

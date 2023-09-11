@@ -1,6 +1,8 @@
 // votingSessionSockets.js
 
-let votingPoints = [
+import VotingSession from "../models/VotingSession.js";
+
+let defaultVotingPoints = [
   {
     commision: "Calidad y servicios",
     required_votes: "Mayoría Simple",
@@ -26,7 +28,32 @@ let votingPoints = [
     votesAbstain: [],
   },
 ]; // Initialize with your data
+
+let votingPoints = [];
 let currentIndex = 0;
+
+// Carga la sesión de votación existente o crea una nueva al iniciar el servidor
+const loadOrInitializeVotingSession = async () => {
+  try {
+    const session = await VotingSession.findOne({});
+    if (session && session.votingPoints.length > 0) {
+      votingPoints = session.votingPoints;
+    } else {
+      const newSession = new VotingSession({
+        municipalityNumber: "001",
+        location: "Mexicali",
+        votingPoints: defaultVotingPoints,
+      });
+      await newSession.save();
+      console.log("Nueva sesión de votación creada exitosamente.");
+      votingPoints = defaultVotingPoints;
+    }
+  } catch (err) {
+    console.log("Error al recuperar o inicializar la sesión de votación:", err);
+  }
+};
+
+loadOrInitializeVotingSession();
 
 export default (io) => {
   io.on("connection", (socket) => {
